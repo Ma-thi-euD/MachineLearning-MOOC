@@ -99,4 +99,28 @@ We can speed up the gradient descent by having each of our input values in rough
 $$-1 \leq x_{(i)} \leq 1$$
 $$or$$
 $$-0.5 \leq x_{(i)} \leq 0.5$$
+Two techniques can help us achieve this. They are called \textbf{feature scaling} and \textbf{mean normalization}. Feature scaling consists into dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a \underline{new range of just 1}. Mean normalization results in a \underline{new average value for the input variable of just 0} by subtracting the average value for an input from the values for that input. \\
+To implement both of these techniques, we need to adjust the input values like this :
+$$x_{i} := \frac{x_{i} - \mu_{i}}{s_{i}}$$
+Where $\mu_{i}$ is the average of all the value for feature $(i)$ and $s_{i}$ the range of values or the standard deviation.
+
+\subsection{Learning rate}
+\subsubsection{Choice of $\alpha$}
+In summary, there is too types of problem when chosing $\alpha$ :
+\begin{itemize}
+	\item $\alpha$ is too small produce a slow convergence
+	\item $\alpha$ is too big cause the algorithm to slowly converge or to not converge at all (most of the time) 
+\end{itemize}
+Andrew advice to chose inside those range of values : $\cdots$, 0.001, 0.003, 0.01, 0.03, 1, $\cdots$
+
+\subsubsection{Debuggiong the choice of the learning rate}
+A way to know if gradient descent is correctly working is to plot the value of $min(J(\theta))$ as a function of the number of iterations of gradient descent. If the algorithm is correctly working, the min value should decrease on all iterations. If it doesn't, it can mean that the learning rate $\alpha$ is too big, and doesn't allow the algorithm to converge. You need to pick a smaller $\alpha$.
+\subsection{Normal Equation}
+The normal equation allows us to find the optimum $\theta$ without iterations. Also there is no need for feature scaling when using the normal equation. The formula is given bellow :$$\theta = (X^{T}X)^{-1}X^{T}y$$
+As seen earlier :
+\begin{itemize}
+	\item $X$ is the matrices containing all the features, it has $m$ rows (number of sample data) and $n+1$ columns (number of features+1). Rememeber $X[,0]$ is equal to one.
+	\item  $y$ is the vector of the value we want to predict in the future.
+	\item  $\theta$ is the vector that contains the parameters of the model.
+\end{itemize}
 \end{document}
