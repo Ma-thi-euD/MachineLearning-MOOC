@@ -123,4 +123,21 @@ As seen earlier :
 	\item  $y$ is the vector of the value we want to predict in the future.
 	\item  $\theta$ is the vector that contains the parameters of the model.
 \end{itemize}
+When n is very big, i.e. the number of features is important it is better to use an iterative process.\\
+As seen in the equation, it only works if X is invertible. In Octave\textbackslash Matlab we want to use the function 'pyinv' over 'inv'. it will allow us to obtain a value of $\theta$ even if X is not invertible.\\
+X noninvertiblity common causes are :
+\begin{itemize}
+	\item Redundant features, where two features are very closely related (i.e. they are linearly dependent)
+	\item Too many features (e.g. $m \leq n$). In this case, delete some features or use "regularization" (to be explained in a later lesson)
+\end{itemize}
+
+\section{Logistic Regression}
+
+\subsection{Representation of hypothesis h}
+For the logistic regression, the hypothesis function $h$ is defined as :
+$$h_{\theta}(x) = \frac{1}{1 + e^{-\theta^{T}x}}$$
+The function $\frac{1}{1 + e^{-z}}$ is called the \textit{Sigmoid Function} or \textit{Logistic Function}. The function amps every any real number included between 0 and 1.\\
+$h_{\theta}(x)$ will give us the \textbf{probability} that our output is 1. For example $h_{\theta}(x) = 0.7$ means there is a 70\% probability that our output is 1. The probability that the output is equal to 0 is the complement of the probability that it is 1.
+$$h_{\theta}(x) = P(y=1|x;\theta) = 1 - P(y=0|x;\theta)$$
+$$P(y=0|x;\theta) + P(y=1|x;\theta) = 1$$
 \end{document}
