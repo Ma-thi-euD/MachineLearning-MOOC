@@ -19,8 +19,10 @@ grad = zeros(size(theta));
 %               derivatives of the cost w.r.t. each parameter in theta
 %
 
-h = sigmoid(X * theta);
-J = 1/m * ((-y .* log(h)) - ((1-y) .* log(1-h)) ) + (lambda\2*m)*(theta(2:end)' * theta(2:end)) ;
+h =   sigmoid(X*theta);
+J = ((1/m)*((-y')*log(h)-(1-y')*log(1-h))) + (lambda/(2*m))*theta(2:end)'*theta(2:end);
+grad(1,:) = ((1/m)*X'*(h-y))(1,:);
+grad(2:end,:) = (((1/m)*X'*(h-y)) + (lambda/m)*theta)(2:end,:);
 
 % Hint: The computation of the cost function and gradients can be
 %       efficiently vectorized. For example, consider the computation
@@ -32,10 +34,6 @@ J = 1/m * ((-y .* log(h)) - ((1-y) .* log(1-h)) ) + (lambda\2*m)*(theta(2:end)' 
 %       the cost function and gradient computations.
 %
 
-grad = (1/m) * (X' * (h - y));
-
-grad(1,:) = (1/m) * (X' * (h - y))(1,:);
-grad(2:end,:) = (1/m) * (X' * (h - y))(1,:) + (lambda/m)*theta(2:end,:) ;
 
 % Hint: When computing the gradient of the regularized cost function,
 %       there're many possible vectorized solutions, but one solution
@@ -44,10 +42,6 @@ grad(2:end,:) = (1/m) * (X' * (h - y))(1,:) + (lambda/m)*theta(2:end,:) ;
 %           temp = theta;
 %           temp(1) = 0;   % because we don't add anything for j = 0
 %           grad = grad + YOUR_CODE_HERE (using the temp variable)
-%
-
-
-
 
 
 
