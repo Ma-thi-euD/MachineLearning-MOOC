@@ -19,7 +19,6 @@ X = [ones(m, 1) X];
 p = sigmoid(X * all_theta');
 [max_values indices] = max(p');
 p = indices;
-size(p)
 % p
 % ====================== YOUR CODE HERE ======================
 % Instructions: Complete the following code to make predictions using
