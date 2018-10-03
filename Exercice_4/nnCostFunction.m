@@ -76,28 +76,22 @@ J = (1/m) * sum(sum((-Y .* log(h)) - ((1-Y) .* log(1- h))));
 %
 %delta_2_fin
 for i=1:m
-  a_1 = X(i, :)
+  a_1 = X(i, :);
   a_1 = [1 a_1];
   a_2 = sigmoid(a_1 * Theta1');
   a_2 = [1 a_2];
   a_3 = sigmoid(a_2 * Theta2');
   h = a_3';
+
+
   delta_3 = h - Y(:, i);
-  delta_2 = (Theta2' * delta_3) .* sigmoidGradient(a_1(:, 2:end) * Theta1'(2:end, :));
-  disp("sigGrad : "), disp(size(sigmoidGradient(a_1 * Theta1')))
-  disp("delta 3 : "), disp(size(delta_3))
-  disp("size theta1 : "), disp(size(Theta1))
-  disp("size Theta2 : "), disp(size(Theta2))
-  disp("size delta_3 : "), disp(size(delta_3))
-  disp("size delta_2 : "), disp(size(delta_2))
-  disp("size a_1' : "), disp(size(a_1'))
-  disp("size delta_3 : "), disp(size(delta_3))
-  disp("size a_2' : "), disp(size(a_2'))
-  size(delta_3*a_2)
-  size(delta_2(2:end, :)*a_1)
-  %delta_2_fin = delta_2_fin + delta_3*a_2'
+  delta_2 = (Theta2' * delta_3)(2:end,:) .* (sigmoidGradient(a_1 * Theta1'))';
+  Theta1_grad = Theta1_grad + delta_2*a_1;
+  Theta2_grad = Theta2_grad + delta_3*a_2;
 end
 
+Theta1_grad = (1/m) * Theta1_grad;
+Theta2_grad = (1/m) * Theta2_grad;
 
 % delta_3 = A_3' - Y;
 % size(delta_3)
