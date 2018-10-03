@@ -51,9 +51,13 @@ for i = 1:size(y)(1)
   Y(y(i), i) = 1;
 end
 
-J = (log(A_3) * -Y) - (log(1-A_3) * (1-Y));
-size(J)
-J = (1/m) * sum(diag(J))
+% J = (log(A_3) * -Y) - (log(1-A_3) * (1-Y));
+% size(J)
+% J = (1/m) * sum(diag(J));
+
+h = A_3';
+J = (1/m) * sum(sum((-Y .* log(h)) - ((1-Y) .* log(1- h))));
+
 % Part 2: Implement the backpropagation algorithm to compute the gradients
 %         Theta1_grad and Theta2_grad. You should return the partial derivatives of
 %         the cost function with respect to Theta1 and Theta2 in Theta1_grad and
