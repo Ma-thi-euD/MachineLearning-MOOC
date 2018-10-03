@@ -21,7 +21,6 @@ Theta1 = reshape(nn_params(1:hidden_layer_size * (input_layer_size + 1)), ...
 
 Theta2 = reshape(nn_params((1 + (hidden_layer_size * (input_layer_size + 1))):end), ...
                  num_labels, (hidden_layer_size + 1));
-
 % Setup some useful variables
 m = size(X, 1);
 % You need to return the following variables correctly
@@ -39,13 +38,15 @@ Theta2_grad = zeros(size(Theta2));
 %         computed in ex4.m
 %
 
-X = [ones(size(X, 1), 1) X];
+A_1 = [ones(size(X, 1), 1) X];
+size(A_1)
 
-A_2 = sigmoid(X * Theta1');
+A_2 = sigmoid(A_1 * Theta1');
 A_2 = [ones(size(A_2, 1), 1) A_2];
+size(A_2)
 
 A_3 = sigmoid(A_2 * Theta2');
-
+size(A_3)
 Y = zeros(num_labels,size(y)(1));
 for i = 1:size(y)(1)
   Y(y(i), i) = 1;
@@ -73,6 +74,47 @@ J = (1/m) * sum(sum((-Y .* log(h)) - ((1-Y) .* log(1- h))));
 %               over the training examples if you are implementing it for the
 %               first time.
 %
+%delta_2_fin
+for i=1:m
+  a_1 = X(i, :)
+  a_1 = [1 a_1];
+  a_2 = sigmoid(a_1 * Theta1');
+  a_2 = [1 a_2];
+  a_3 = sigmoid(a_2 * Theta2');
+  h = a_3';
+  delta_3 = h - Y(:, i);
+  delta_2 = (Theta2' * delta_3) .* sigmoidGradient(a_1(:, 2:end) * Theta1'(2:end, :));
+  disp("sigGrad : "), disp(size(sigmoidGradient(a_1 * Theta1')))
+  disp("delta 3 : "), disp(size(delta_3))
+  disp("size theta1 : "), disp(size(Theta1))
+  disp("size Theta2 : "), disp(size(Theta2))
+  disp("size delta_3 : "), disp(size(delta_3))
+  disp("size delta_2 : "), disp(size(delta_2))
+  disp("size a_1' : "), disp(size(a_1'))
+  disp("size delta_3 : "), disp(size(delta_3))
+  disp("size a_2' : "), disp(size(a_2'))
+  size(delta_3*a_2)
+  size(delta_2(2:end, :)*a_1)
+  %delta_2_fin = delta_2_fin + delta_3*a_2'
+end
+
+
+% delta_3 = A_3' - Y;
+% size(delta_3)
+% size(Theta1')
+% g_prime = sigmoidGradient(A_1 * Theta1');
+% size(g_prime)
+% test = delta_3 .* g_prime;
+% delta_2 = Theta2' * test;
+% delta_2_fin = zeros(size(Theta2)(1), size(Theta2)(2));
+% delta_2_fin = delta_2_fin + delta_3 * A_2;
+% delta_1_fin = zeros(size(Theta1)(1), size(Theta1)(2));
+% delta_1_fin = delta_1_fin + delta_2(2:end, :) * A_1;
+%
+% Theta1_grad = (1/m) * delta_1_fin;
+% Theta2_grad = (1/m) * delta_2_fin;
+
+
 % Part 3: Implement regularization with the cost function and gradients.
 %
 %         Hint: You can implement this around the code for
