@@ -80,7 +80,10 @@ J = (1/m) * sum(sum((-Y .* log(h)) - ((1-Y) .* log(1- h))));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-
+theta1_reg = Theta1(:, 2:end);
+theta2_reg = Theta2(:, 2:end);
+reg = sum(sum( theta1_reg .* theta1_reg )) + sum(sum( theta2_reg .* theta2_reg ));
+J = J + reg * ( lambda / (2*m) ) ;
 
 
 
