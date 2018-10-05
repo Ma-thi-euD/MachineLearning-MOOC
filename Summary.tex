@@ -1,0 +1,143 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{amsmath}
+
+\begin{document}
+
+\title{Machine Learning - Coursera\\
+\large by Stanford University}
+
+\maketitle
+\newpage
+\section{Linear Regression with one variable}
+
+\subsection{Representation of hypothesis h}
+ 
+ For a one variable Linear Reagression, the hypothesis function h is defined as : 
+\begin{center}
+	 $$h_\theta(x) = \theta_0 + \theta_1x$$
+\end{center}
+
+Where $x$ is the variable and [$\theta_0$, $\theta_1$] are the parameters of the linear regression model.
+
+\subsection{Cost function J}
+The purpose of this function is to select the best parameters $\theta_0$ and $\theta_1$ for the model. The best parameters are the ones that makes $h_\theta(x)$ the closest possible to $y$, $y$ being the value we want to predict.
+The chosen cost function J is :
+\begin{center}
+	$$J(\theta_0, \theta_1) = \frac{1}{2m}\sum_{i = 1}^{m}(h_\theta(x^i) - y^i)^2$$
+\end{center}
+Where $m$ is the number of sample data we have. What that function computes is half the mean of the squared differences between the predicted values $h_\theta(x^i)$ and the actual values $y^i$.\\
+The goal now is to minimise $J$ as to find the best parameters $\theta_0$ and $\theta_1$.
+
+\subsection{Gradient descent algortithm}
+\subsubsection{Defintion}
+
+This alogrithm helps us to find a local minimum for the cost function $J(\theta)$. It works by \underline{simultaneously} updating the paramaters $\theta_0$ and $\theta_1$ following this equation :
+\begin{center}
+	$$\theta_j =  \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta_0, \theta_1)$$
+\end{center}
+Where $\alpha$ is called the learning rate.\\
+Example of simultaneous update :
+
+\begin{center}
+	
+	\begin{tabular}{l}
+		
+		$temp0 := \theta_0 =  \theta_0 - \alpha \frac{\partial}{\partial\theta_0}J(\theta_0, \theta_1)$\\
+		$temp1 := \theta_1 =  \theta_1 - \alpha \frac{\partial}{\partial\theta_1}J(\theta_0, \theta_1)$\\
+		$\theta_0 := temp0$\\
+		$\theta_1 := temp1$
+		
+	\end{tabular}
+
+\end{center}
+
+\subsubsection{Application on one-variable linear regressgion}
+The partial derivatives for the one-variable linear regression are as follow : 
+$$\frac{\partial}{\partial\theta_0}J(\theta_0, \theta_1) = \frac{1}{m}\sum_{i = 1}^{m}(h_\theta(x^i) - y^i)^2$$
+$$\frac{\partial}{\partial\theta_i}J(\theta_0, \theta_1) = \frac{1}{m}\sum_{i = 1}^{m}(h_\theta(x^i) - y^i)^2 \cdot x^i$$
+
+So we repeat this next step until convergence :
+$$\theta_0 = \theta_0 - \frac{\alpha}{m}\sum_{i = 1}^{m}(h_\theta(x^i) - y^i)^2$$
+$$\theta_1 = \theta_1 - \frac{\alpha}{m}\sum_{i = 1}^{m}(h_\theta(x^i) - y^i)^2 \cdot x^i$$
+
+
+\section{Multivariate Linear Regression}
+\subsection{Notations}
+
+$x^{(i)}_j$ is the value of the feature $j$ in the $i^{th}$ training example.\\
+$x^{(i)}$ is the input (all the features) of the $i^{th}$ training example.\\
+$m$ is the number of training examples.\\
+$n$ is the number of features.
+
+\subsection{Representation of hypothesis h}
+For a Multivariate Linear Regression, the hypothesis function h is defined as : 
+	$$h_\theta(x) = \theta_0 + \theta_1x_1 + \theta_2x_2 + \theta_3x_3 + \cdots + \theta_n x_n$$
+We can write that under this vectorized form :
+$$h_\theta(x) = {\begin{bmatrix}\theta_{0} \theta_{1} \theta_{2} \cdots \theta_{n}\end{bmatrix}
+\begin{bmatrix}
+	x_{0} \\
+	x_{1} \\
+	x_{2} \\
+	\vdots \\
+	x_{n}
+\end{bmatrix}} = \theta^Tx$$
+
+By convention, $x_{0}$ is set equal to 1.\\
+Moreover, the cost function is the same as the one-variate linear regression.
+
+\subsection{Gradient Descent}
+From what we saw in the previous chapter about gradient descent we obtain that equation for the multivariate linear regression :
+
+$$\theta_j =  \theta_j - \alpha \frac{\partial}{\partial\theta_j}J(\theta_0, \theta_1) = \theta_j - \frac{\alpha}{m}\sum_{i=1}^{m}(h_{\theta}(x^{(i)})-y^{(i)})\cdot x^{(i)}_{j}$$
+For $j$ from 0 to n.
+
+\subsection{Feature Scaling}
+
+We can speed up the gradient descent by having each of our input values in roughly the same range. That is because $\theta$ will descend quickly on small ranges. Ideally, we would like our input values to be inside those ranges :\\
+
+$$-1 \leq x_{(i)} \leq 1$$
+$$or$$
+$$-0.5 \leq x_{(i)} \leq 0.5$$
+Two techniques can help us achieve this. They are called \textbf{feature scaling} and \textbf{mean normalization}. Feature scaling consists into dividing the input values by the range (i.e. the maximum value minus the minimum value) of the input variable, resulting in a \underline{new range of just 1}. Mean normalization results in a \underline{new average value for the input variable of just 0} by subtracting the average value for an input from the values for that input. \\
+To implement both of these techniques, we need to adjust the input values like this :
+$$x_{i} := \frac{x_{i} - \mu_{i}}{s_{i}}$$
+Where $\mu_{i}$ is the average of all the value for feature $(i)$ and $s_{i}$ the range of values or the standard deviation.
+
+\subsection{Learning rate}
+\subsubsection{Choice of $\alpha$}
+In summary, there is too types of problem when chosing $\alpha$ :
+\begin{itemize}
+	\item $\alpha$ is too small produce a slow convergence
+	\item $\alpha$ is too big cause the algorithm to slowly converge or to not converge at all (most of the time) 
+\end{itemize}
+Andrew advice to chose inside those range of values : $\cdots$, 0.001, 0.003, 0.01, 0.03, 1, $\cdots$
+
+\subsubsection{Debuggiong the choice of the learning rate}
+A way to know if gradient descent is correctly working is to plot the value of $min(J(\theta))$ as a function of the number of iterations of gradient descent. If the algorithm is correctly working, the min value should decrease on all iterations. If it doesn't, it can mean that the learning rate $\alpha$ is too big, and doesn't allow the algorithm to converge. You need to pick a smaller $\alpha$.
+\subsection{Normal Equation}
+The normal equation allows us to find the optimum $\theta$ without iterations. Also there is no need for feature scaling when using the normal equation. The formula is given bellow :$$\theta = (X^{T}X)^{-1}X^{T}y$$
+As seen earlier :
+\begin{itemize}
+	\item $X$ is the matrices containing all the features, it has $m$ rows (number of sample data) and $n+1$ columns (number of features+1). Rememeber $X[,0]$ is equal to one.
+	\item  $y$ is the vector of the value we want to predict in the future.
+	\item  $\theta$ is the vector that contains the parameters of the model.
+\end{itemize}
+When n is very big, i.e. the number of features is important it is better to use an iterative process.\\
+As seen in the equation, it only works if X is invertible. In Octave\textbackslash Matlab we want to use the function 'pyinv' over 'inv'. it will allow us to obtain a value of $\theta$ even if X is not invertible.\\
+X noninvertiblity common causes are :
+\begin{itemize}
+	\item Redundant features, where two features are very closely related (i.e. they are linearly dependent)
+	\item Too many features (e.g. $m \leq n$). In this case, delete some features or use "regularization" (to be explained in a later lesson)
+\end{itemize}
+
+\section{Logistic Regression}
+
+\subsection{Representation of hypothesis h}
+For the logistic regression, the hypothesis function $h$ is defined as :
+$$h_{\theta}(x) = \frac{1}{1 + e^{-\theta^{T}x}}$$
+The function $\frac{1}{1 + e^{-z}}$ is called the \textit{Sigmoid Function} or \textit{Logistic Function}. The function amps every any real number included between 0 and 1.\\
+$h_{\theta}(x)$ will give us the \textbf{probability} that our output is 1. For example $h_{\theta}(x) = 0.7$ means there is a 70\% probability that our output is 1. The probability that the output is equal to 0 is the complement of the probability that it is 1.
+$$h_{\theta}(x) = P(y=1|x;\theta) = 1 - P(y=0|x;\theta)$$
+$$P(y=0|x;\theta) + P(y=1|x;\theta) = 1$$
+\end{document}
